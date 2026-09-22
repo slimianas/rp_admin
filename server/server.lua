@@ -479,7 +479,6 @@ RegisterNetEvent(
 
         local source = source
 
-
         -- SECURITY
 
         if not isAdmin(source) then
@@ -489,6 +488,36 @@ RegisterNetEvent(
                 source,
                 false,
                 'You do not have permission.'
+            )
+
+            return
+        end
+
+        if action == 'spawn' then
+
+            model = tostring(model or ''):lower()
+
+            if model == '' then
+                TriggerClientEvent(
+                    'rp_admin:actionResult',
+                    source,
+                    false,
+                    'Vehicle model is required.'
+                )
+                return
+            end
+
+            TriggerClientEvent(
+                'rp_admin:spawnVehicle',
+                source,
+                model
+            )
+
+            TriggerClientEvent(
+                'rp_admin:actionResult',
+                source,
+                true,
+                'Spawning ' .. model .. '...'
             )
 
             return
@@ -640,6 +669,37 @@ RegisterNetEvent('rp_admin:serverAction', function(action, message)
         )
 
     end
+
+end)
+
+RegisterNetEvent('rp_admin:giveSpawnedVehicleKeys', function(netId)
+
+    local source = source
+
+    if not isAdmin(source) then
+        return
+    end
+
+    local vehicle = NetworkGetEntityFromNetworkId(
+        tonumber(netId)
+    )
+
+    if vehicle == 0 or not DoesEntityExist(vehicle) then
+        print('^1[RP_ADMIN] Could not find spawned vehicle for keys.^7')
+        return
+    end
+
+    exports.qbx_vehiclekeys:GiveKeys(
+        source,
+        vehicle,
+        true
+    )
+
+    print(
+        '^2[RP_ADMIN] Vehicle keys granted to player '
+        .. tostring(source)
+        .. '^7'
+    )
 
 end)
 

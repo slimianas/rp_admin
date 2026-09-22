@@ -282,13 +282,23 @@ RegisterNUICallback(
         local model =
             tostring(data.model or '')
 
+        if action == 'spawn' then
+            model = model:lower()
+
+            if model == '' then
+                cb({
+                    success = false,
+                    message = 'Enter a vehicle model.'
+                })
+                return
+            end
+        end
 
         TriggerServerEvent(
             'rp_admin:vehicleAction',
             action,
             model
         )
-
 
         cb('ok')
 
@@ -504,4 +514,61 @@ RegisterNUICallback('serverAction', function(data, cb)
     )
 
     cb('ok')
+end)
+
+
+RegisterNetEvent('rp_admin:spawnVehicle', function(model)
+
+    local hash = joaat(model)
+
+    if not IsModelInCdimage(hash) or not IsModelAVehicle(hash) then
+        TriggerEvent(
+            'qbx_core:Notify',
+            'Invalid vehicle model: ' .. model,
+            'error'
+        )
+        return
+    end
+
+    RequestModel(hash)
+
+    while not HasModelLoaded(hash) do
+        Wait(0)
+    end
+
+    local ped = PlayerPedId()
+    local coords = GetEntityCoords(ped)
+    local heading = GetEntityHeading(ped)
+
+    local vehicle = CreateVehicle(
+        hash,
+        coords.x,
+        coords.y,
+        coords.z,
+        heading,
+        true,
+        false
+    )
+
+    if DoesEntityExist(vehicle) then
+
+        SetEntityAsMissionEntity(vehicle, true, true)
+        SetVehicleOnGroundProperly(vehicle)
+        SetPedIntoVehicle(ped, vehicle, -1)
+
+        TriggerServerEvent(
+        'rp_admin:giveSpawnedVehicleKeys',
+        VehToNet(vehicle)
+    )
+
+        TriggerEvent(
+            'qbx_core:Notify',
+            'Spawned ' .. model,
+            'success'
+        )
+
+    end
+
+    SetModelAsNoLongerNeeded(hash)
+
 end)
