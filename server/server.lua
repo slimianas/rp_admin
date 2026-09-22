@@ -703,6 +703,42 @@ RegisterNetEvent('rp_admin:giveSpawnedVehicleKeys', function(netId)
 
 end)
 
+RegisterNetEvent('rp_admin:giveCurrentVehicleKeys', function()
+
+    local source = source
+
+    if not isAdmin(source) then
+        return
+    end
+
+    local ped = GetPlayerPed(source)
+    local vehicle = GetVehiclePedIsIn(ped, false)
+
+    if vehicle == 0 then
+        TriggerClientEvent(
+            'rp_admin:actionResult',
+            source,
+            false,
+            'You are not inside a vehicle.'
+        )
+        return
+    end
+
+    exports.qbx_vehiclekeys:GiveKeys(
+        source,
+        vehicle,
+        true
+    )
+
+    TriggerClientEvent(
+        'rp_admin:actionResult',
+        source,
+        true,
+        'Vehicle keys granted.'
+    )
+
+end)
+
 RegisterNetEvent('rp_admin:testServerEvent', function(message)
     local src = source
 

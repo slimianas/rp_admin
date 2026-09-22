@@ -338,79 +338,91 @@ RegisterNetEvent(
 
         -- REPAIR
 
-        if action == 'repair' then
+if action == 'repair' then
 
-            SetVehicleFixed(vehicle)
+    SetVehicleFixed(vehicle)
+    SetVehicleDeformationFixed(vehicle)
+    SetVehicleUndriveable(vehicle, false)
 
-            SetVehicleDeformationFixed(vehicle)
+    SetVehicleEngineHealth(vehicle, 1000.0)
+    SetVehicleBodyHealth(vehicle, 1000.0)
+    SetVehiclePetrolTankHealth(vehicle, 1000.0)
 
-            SetVehicleUndriveable(
-                vehicle,
-                false
-            )
+    for i = 0, 7 do
+        SetVehicleTyreFixed(vehicle, i)
+    end
 
-            SetVehicleEngineHealth(
-                vehicle,
-                1000.0
-            )
+    SetVehicleDirtLevel(vehicle, 0.0)
 
-            SetVehicleBodyHealth(
-                vehicle,
-                1000.0
-            )
+    exports.qbx_core:Notify(
+        'Vehicle repaired.',
+        'success'
+    )
 
 
         -- CLEAN
+elseif action == 'clean' then
 
-        elseif action == 'clean' then
+    SetVehicleDirtLevel(vehicle, 0.0)
 
-            SetVehicleDirtLevel(
-                vehicle,
-                0.0
-            )
+    exports.qbx_core:Notify(
+        'Vehicle cleaned.',
+        'success'
+    )
 
 
         -- FLIP
 
-        elseif action == 'flip' then
+elseif action == 'flip' then
 
-            local coords =
-                GetEntityCoords(vehicle)
+    local coords = GetEntityCoords(vehicle)
+    local heading = GetEntityHeading(vehicle)
 
+    SetEntityCoords(
+        vehicle,
+        coords.x,
+        coords.y,
+        coords.z + 1.0,
+        false,
+        false,
+        false,
+        false
+    )
 
-            SetEntityCoords(
-                vehicle,
-                coords.x,
-                coords.y,
-                coords.z + 1.0,
-                false,
-                false,
-                false,
-                false
-            )
+    SetEntityRotation(
+        vehicle,
+        0.0,
+        0.0,
+        heading,
+        2,
+        true
+    )
 
+    SetVehicleOnGroundProperly(vehicle)
 
-            SetEntityRotation(
-                vehicle,
-                0.0,
-                0.0,
-                GetEntityHeading(vehicle),
-                2,
-                true
-            )
+    exports.qbx_core:Notify(
+        'Vehicle flipped.',
+        'success'
+    )
 
 
         -- DELETE
 
-        elseif action == 'delete' then
 
-            SetEntityAsMissionEntity(
-                vehicle,
-                true,
-                true
-            )
+elseif action == 'delete' then
 
-            DeleteVehicle(vehicle)
+    SetEntityAsMissionEntity(
+        vehicle,
+        true,
+        true
+    )
+
+    DeleteVehicle(vehicle)
+
+    exports.qbx_core:Notify(
+        'Vehicle deleted.',
+        'success'
+    )
 
 
         -- KEYS
