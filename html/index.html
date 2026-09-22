@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RP Admin</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div id="admin-panel">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">R</div>
+
+            <div>
+                <div class="brand-name">RP ADMIN</div>
+                <div class="brand-version">CONTROL CENTER</div>
+            </div>
+        </div>
+
+        <div class="menu-label">MAIN</div>
+
+        <nav>
+            <button class="nav-item active">
+                <span class="nav-icon">⌂</span>
+                <span>Dashboard</span>
+            </button>
+
+            <button class="nav-item">
+                <span class="nav-icon">♙</span>
+                <span>Players</span>
+                <span class="nav-count">24</span>
+            </button>
+
+            <button class="nav-item">
+                <span class="nav-icon">◈</span>
+                <span>Vehicles</span>
+            </button>
+
+            <button class="nav-item">
+                <span class="nav-icon">⚙</span>
+                <span>Server</span>
+            </button>
+        </nav>
+
+        <div class="menu-label settings-label">MANAGEMENT</div>
+
+        <nav>
+            <button class="nav-item">
+                <span class="nav-icon">⚡</span>
+                <span>Resources</span>
+            </button>
+
+            <button class="nav-item">
+                <span class="nav-icon">▣</span>
+                <span>Logs</span>
+            </button>
+
+            <button class="nav-item">
+                <span class="nav-icon">♟</span>
+                <span>Staff</span>
+            </button>
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="server-status">
+                <span class="status-dot"></span>
+
+                <div>
+                    <div class="status-title">Server Online</div>
+                    <div class="status-sub">Everything operational</div>
+                </div>
+            </div>
+
+            <button class="close-button" id="closeBtn">
+                <span>×</span>
+                Close Panel
+                <kbd>ESC</kbd>
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <div class="welcome">
+                <div class="page-title">Dashboard</div>
+                <div class="breadcrumb">
+                    Welcome back, <strong>Anas</strong>
+                </div>
+            </div>
+
+            <div class="top-actions">
+
+                <div class="server-pill">
+                    <span class="status-dot"></span>
+                    SERVER ONLINE
+                </div>
+
+                <button class="icon-button">
+                    ♧
+                    <span class="notification-dot"></span>
+                </button>
+
+                <div class="profile">
+                    <div class="avatar">A</div>
+
+                    <div class="profile-info">
+                        <strong>Anas</strong>
+                        <span>Administrator</span>
+                    </div>
+
+                    <span class="profile-arrow">⌄</span>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+        <section class="content">
+
+            <!-- HERO -->
+            <div class="hero">
+
+                <div>
+                    <div class="hero-small">ADMINISTRATION CENTER</div>
+
+                    <h1>
+                        Welcome back,
+                        <span>Anas</span>
+                    </h1>
+
+                    <p>
+                        Manage your server, players and resources
+                        from one place.
+                    </p>
+                </div>
+
+                <div class="hero-decoration">
+                    <div class="circle circle-one"></div>
+                    <div class="circle circle-two"></div>
+                    <div class="hero-glow"></div>
+                </div>
+
+            </div>
+
+
+            <!-- STAT CARDS -->
+            <div class="stats">
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+                        <div class="stat-icon blue">♙</div>
+                        <span class="stat-change">LIVE</span>
+                    </div>
+
+                    <div class="stat-value">24</div>
+                    <div class="stat-name">Online Players</div>
+
+                    <div class="stat-line">
+                        <div style="width: 68%"></div>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+                        <div class="stat-icon purple">◈</div>
+                        <span class="stat-change">ACTIVE</span>
+                    </div>
+
+                    <div class="stat-value">18</div>
+                    <div class="stat-name">Active Vehicles</div>
+
+                    <div class="stat-line">
+                        <div style="width: 52%"></div>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+                        <div class="stat-icon green">⚡</div>
+                        <span class="stat-change">RUNNING</span>
+                    </div>
+
+                    <div class="stat-value">47</div>
+                    <div class="stat-name">Resources</div>
+
+                    <div class="stat-line">
+                        <div style="width: 91%"></div>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+                        <div class="stat-icon orange">◷</div>
+                        <span class="stat-change">UPTIME</span>
+                    </div>
+
+                    <div class="stat-value">04:28</div>
+                    <div class="stat-name">Server Uptime</div>
+
+                    <div class="stat-line">
+                        <div style="width: 78%"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- LOWER GRID -->
+            <div class="dashboard-grid">
+
+
+                <!-- PLAYERS -->
+                <div class="panel players-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <h2>Online Players</h2>
+                            <p>Players currently connected to the server</p>
+                        </div>
+
+                        <button class="view-button">
+                            View All
+                            <span>→</span>
+                        </button>
+
+                    </div>
+
+
+                    <div class="player-list">
+
+                        <div class="player-row">
+
+                            <div class="player-avatar">J</div>
+
+                            <div class="player-details">
+                                <strong>John_Wick</strong>
+                                <span>ID: 12 · Civilian</span>
+                            </div>
+
+                            <div class="player-ping">
+                                <span class="ping-dot"></span>
+                                42 ms
+                            </div>
+
+                            <button class="player-more">•••</button>
+
+                        </div>
+
+
+                        <div class="player-row">
+
+                            <div class="player-avatar purple-avatar">M</div>
+
+                            <div class="player-details">
+                                <strong>Michael_Scott</strong>
+                                <span>ID: 27 · Police</span>
+                            </div>
+
+                            <div class="player-ping">
+                                <span class="ping-dot"></span>
+                                56 ms
+                            </div>
+
+                            <button class="player-more">•••</button>
+
+                        </div>
+
+
+                        <div class="player-row">
+
+                            <div class="player-avatar green-avatar">A</div>
+
+                            <div class="player-details">
+                                <strong>Alex_Morgan</strong>
+                                <span>ID: 31 · EMS</span>
+                            </div>
+
+                            <div class="player-ping">
+                                <span class="ping-dot"></span>
+                                38 ms
+                            </div>
+
+                            <button class="player-more">•••</button>
+
+                        </div>
+
+
+                        <div class="player-row">
+
+                            <div class="player-avatar orange-avatar">D</div>
+
+                            <div class="player-details">
+                                <strong>Daniel_Ross</strong>
+                                <span>ID: 44 · Mechanic</span>
+                            </div>
+
+                            <div class="player-ping">
+                                <span class="ping-dot"></span>
+                                61 ms
+                            </div>
+
+                            <button class="player-more">•••</button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUICK ACTIONS -->
+                <div class="panel actions-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <h2>Quick Actions</h2>
+                            <p>Common administration tools</p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="actions">
+
+                        <button class="action">
+
+                            <div class="action-icon blue">♙</div>
+
+                            <div>
+                                <strong>Player Management</strong>
+                                <span>Manage connected players</span>
+                            </div>
+
+                            <b>→</b>
+
+                        </button>
+
+
+                        <button class="action">
+
+                            <div class="action-icon purple">◈</div>
+
+                            <div>
+                                <strong>Vehicle Management</strong>
+                                <span>Spawn and manage vehicles</span>
+                            </div>
+
+                            <b>→</b>
+
+                        </button>
+
+
+                        <button class="action">
+
+                            <div class="action-icon orange">⚡</div>
+
+                            <div>
+                                <strong>Resource Manager</strong>
+                                <span>Start, stop or restart resources</span>
+                            </div>
+
+                            <b>→</b>
+
+                        </button>
+
+
+                        <button class="action">
+
+                            <div class="action-icon red">!</div>
+
+                            <div>
+                                <strong>Server Actions</strong>
+                                <span>Restart and server controls</span>
+                            </div>
+
+                            <b>→</b>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- FOOTER -->
+            <div class="dashboard-footer">
+
+                <span>
+                    RP Admin Panel
+                </span>
+
+                <span>
+                    Qbox Framework
+                    <i></i>
+                    Local Development Server
+                </span>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<!-- VEHICLE MANAGEMENT -->
+
+<div id="vehicle-modal" class="modal-overlay">
+
+    <div class="vehicle-modal">
+
+        <div class="modal-header">
+
+            <div class="modal-player">
+
+                <div class="modal-avatar vehicle-avatar">
+                    🚗
+                </div>
+
+                <div>
+                    <div class="modal-title">
+                        Vehicle Management
+                    </div>
+
+                    <div class="modal-subtitle">
+                        Manage and spawn vehicles
+                    </div>
+                </div>
+
+            </div>
+
+            <button
+                class="modal-close"
+                id="vehicle-close"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="vehicle-body">
+
+            <!-- SPAWN -->
+
+            <div class="modal-section-title">
+                SPAWN VEHICLE
+            </div>
+
+            <div class="spawn-box">
+
+                <input
+                    id="vehicle-model"
+                    type="text"
+                    placeholder="Enter vehicle model  •  sultan"
+                    autocomplete="off"
+                >
+
+                <button id="spawn-vehicle">
+                    Spawn
+                </button>
+
+            </div>
+
+
+            <!-- CURRENT VEHICLE -->
+
+            <div class="modal-section-title vehicle-section">
+                CURRENT VEHICLE
+            </div>
+
+            <div class="vehicle-actions">
+
+                <button
+                    class="vehicle-action"
+                    data-vehicle-action="repair"
+                >
+                    <div class="vehicle-action-icon blue">
+                        🔧
+                    </div>
+
+                    <div>
+                        <strong>Repair</strong>
+                        <span>Fully repair your vehicle</span>
+                    </div>
+                </button>
+
+
+                <button
+                    class="vehicle-action"
+                    data-vehicle-action="clean"
+                >
+                    <div class="vehicle-action-icon green">
+                        ✦
+                    </div>
+
+                    <div>
+                        <strong>Clean</strong>
+                        <span>Clean the vehicle</span>
+                    </div>
+                </button>
+
+
+                <button
+                    class="vehicle-action"
+                    data-vehicle-action="flip"
+                >
+                    <div class="vehicle-action-icon orange">
+                        ↻
+                    </div>
+
+                    <div>
+                        <strong>Flip Vehicle</strong>
+                        <span>Put the vehicle back on its wheels</span>
+                    </div>
+                </button>
+
+
+                <button
+                    class="vehicle-action"
+                    data-vehicle-action="keys"
+                >
+                    <div class="vehicle-action-icon purple">
+                        🔑
+                    </div>
+
+                    <div>
+                        <strong>Give Keys</strong>
+                        <span>Give yourself vehicle keys</span>
+                    </div>
+                </button>
+
+            </div>
+
+
+            <!-- DELETE -->
+
+            <button
+                class="vehicle-delete"
+                data-vehicle-action="delete"
+            >
+                <span>🗑</span>
+
+                <div>
+                    <strong>Delete Current Vehicle</strong>
+                    <small>Remove the vehicle from the world</small>
+                </div>
+            </button>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+            <span>
+                Vehicle management
+            </span>
+
+            <button id="vehicle-cancel">
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- SERVER MANAGEMENT MODAL -->
+<div id="server-modal" class="modal-overlay">
+    <div class="server-modal">
+
+        <div class="modal-header">
+            <div class="modal-player">
+                <div class="modal-avatar server-avatar">⚙</div>
+
+                <div>
+                    <div class="modal-title">Server Management</div>
+                    <div class="modal-subtitle">
+                        Manage server settings and status
+                    </div>
+                </div>
+            </div>
+
+            <button class="modal-close" id="server-close">×</button>
+        </div>
+
+        <div class="server-body">
+
+            <div class="modal-section-title">
+                SERVER STATUS
+            </div>
+
+            <div class="server-status-card">
+                <div class="server-status-left">
+                    <span class="server-status-dot"></span>
+
+                    <div>
+                        <strong>Server Online</strong>
+                        <span>RP Server is currently running</span>
+                    </div>
+                </div>
+
+                <div class="server-status-badge">
+                    ONLINE
+                </div>
+            </div>
+
+
+            <div class="modal-section-title server-section">
+                SERVER ACTIONS
+            </div>
+
+            <div class="server-actions">
+
+                <button class="server-action" data-server-action="restart">
+                    <div class="server-action-icon restart-icon">
+                        ↻
+                    </div>
+
+                    <div>
+                        <strong>Restart Server</strong>
+                        <span>Restart the RP server</span>
+                    </div>
+                </button>
+
+
+                <button class="server-action" data-server-action="announcement">
+                    <div class="server-action-icon announce-icon">
+                        !
+                    </div>
+
+                    <div>
+                        <strong>Announcement</strong>
+                        <span>Send a message to all players</span>
+                    </div>
+                </button>
+
+
+                <button class="server-action" data-server-action="weather">
+                    <div class="server-action-icon weather-icon">
+                        ☀
+                    </div>
+
+                    <div>
+                        <strong>Weather</strong>
+                        <span>Change the server weather</span>
+                    </div>
+                </button>
+
+
+                <button class="server-action" data-server-action="time">
+                    <div class="server-action-icon time-icon">
+                        ◷
+                    </div>
+
+                    <div>
+                        <strong>Time</strong>
+                        <span>Change the server time</span>
+                    </div>
+                </button>
+
+            </div>
+
+
+            <div class="modal-section-title server-section">
+                SERVER INFORMATION
+            </div>
+
+            <div class="server-info-grid">
+
+                <div class="server-info">
+                    <span>STATUS</span>
+                    <strong>ONLINE</strong>
+                </div>
+
+                <div class="server-info">
+                    <span>PLAYERS</span>
+                    <strong id="server-player-count">0</strong>
+                </div>
+
+                <div class="server-info">
+                    <span>MODE</span>
+                    <strong>QBOX RP</strong>
+                </div>
+
+                <div class="server-info">
+                    <span>FRAMEWORK</span>
+                    <strong>QBOX</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <span>Server management</span>
+            <button id="server-cancel">Close</button>
+        </div>
+
+    </div>
+</div>
+
+<div id="announcement-modal" class="modal-overlay">
+    <div class="announcement-modal">
+
+        <div class="modal-header">
+            <div class="modal-player">
+                <div class="modal-avatar announcement-avatar">!</div>
+
+                <div>
+                    <div class="modal-title">Server Announcement</div>
+                    <div class="modal-subtitle">
+                        Send a message to all players
+                    </div>
+                </div>
+            </div>
+
+            <button class="modal-close" id="announcement-close">×</button>
+        </div>
+
+        <div class="announcement-body">
+
+            <div class="modal-section-title">
+                MESSAGE
+            </div>
+
+            <textarea
+                id="announcement-message"
+                class="announcement-input"
+                maxlength="200"
+                placeholder="Type your announcement..."
+            ></textarea>
+
+            <div class="announcement-counter">
+                <span>Visible to all players</span>
+                <span><b id="announcement-count">0</b>/200</span>
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <span>Server announcement</span>
+
+            <div class="announcement-footer-actions">
+                <button id="announcement-cancel">Cancel</button>
+                <button id="announcement-send">Send Announcement</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="app.js"></script>
+
+<!-- =========================================
+     PLAYER MANAGEMENT MODAL
+========================================= -->
+
+<div id="player-modal" class="modal-overlay">
+
+    <div class="player-modal">
+
+        <!-- HEADER -->
+
+        <div class="modal-header">
+
+            <div class="modal-player">
+
+                <div class="modal-avatar" id="modal-avatar">
+                    A
+                </div>
+
+                <div>
+                    <div class="modal-title" id="modal-player-name">
+                        Player
+                    </div>
+
+                    <div class="modal-subtitle">
+                        ID <span id="modal-player-id">0</span>
+                        <span class="modal-separator">·</span>
+                        <span id="modal-player-job">Civilian</span>
+                        <span class="modal-separator">·</span>
+                        <span id="modal-player-ping">0 ms</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <button
+                class="modal-close"
+                id="modal-close"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <!-- BODY -->
+
+        <div class="modal-body">
+
+            <div class="modal-section-title">
+                PLAYER ACTIONS
+            </div>
+
+
+            <div class="action-grid">
+
+                <button
+                    class="modal-action"
+                    data-action="teleport"
+                >
+
+                    <div class="modal-action-icon blue">
+                        ↗
+                    </div>
+
+                    <div class="modal-action-text">
+                        <strong>Teleport To</strong>
+                        <span>Teleport yourself to this player</span>
+                    </div>
+
+                </button>
+
+
+                <button
+                    class="modal-action"
+                    data-action="bring"
+                >
+
+                    <div class="modal-action-icon purple">
+                        ↙
+                    </div>
+
+                    <div class="modal-action-text">
+                        <strong>Bring Player</strong>
+                        <span>Bring this player to you</span>
+                    </div>
+
+                </button>
+
+
+                <button
+                    class="modal-action"
+                    data-action="freeze"
+                >
+
+                    <div class="modal-action-icon orange">
+                        ❄
+                    </div>
+
+                    <div class="modal-action-text">
+                        <strong>Freeze Player</strong>
+                        <span>Freeze or unfreeze this player</span>
+                    </div>
+
+                </button>
+
+
+                <button
+                    class="modal-action"
+                    data-action="revive"
+                >
+
+                    <div class="modal-action-icon green">
+                        +
+                    </div>
+
+                    <div class="modal-action-text">
+                        <strong>Revive Player</strong>
+                        <span>Revive this player's character</span>
+                    </div>
+
+                </button>
+
+            </div>
+
+
+            <div class="modal-section-title admin-title">
+                ADMIN ACTIONS
+            </div>
+
+
+            <div class="admin-action-row">
+
+                <button
+                    class="modal-admin-action kick"
+                    data-action="kick"
+                >
+
+                    <span>👢</span>
+
+                    <div>
+                        <strong>Kick Player</strong>
+                        <small>Remove player from the server</small>
+                    </div>
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <div class="modal-footer">
+
+            <span>
+                Player management
+            </span>
+
+            <button id="modal-cancel">
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    document.getElementById('closeBtn').addEventListener('click', () => {
+        fetch(`https://${GetParentResourceName()}/close`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})
+        });
+    });
+</script>
+
+</body>
+</html>
