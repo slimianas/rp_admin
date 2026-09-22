@@ -295,6 +295,32 @@ RegisterNetEvent(
                 'Freeze toggled.'
             )
 
+            -- =================================
+            -- KICK
+            -- =================================
+            elseif action == 'kick' then
+
+
+
+                -- =================================
+                -- SPECTATE
+                -- =================================
+
+            elseif action == 'spectate' then
+
+         TriggerClientEvent(
+          'rp_admin:startSpectate',
+            adminSource,
+          targetId
+    )
+
+    TriggerClientEvent(
+        'rp_admin:actionResult',
+        adminSource,
+        true,
+        'Spectate started.'
+    )
+
 
         -- =================================
         -- REVIVE
