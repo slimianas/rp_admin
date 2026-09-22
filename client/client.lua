@@ -1,6 +1,8 @@
 print('^2[RP_ADMIN] client.lua loaded^7')
 
 local adminOpen = false
+local spectating = false
+local spectateTarget = nil
 
 
 -- =========================================
@@ -8,6 +10,11 @@ local adminOpen = false
 -- =========================================
 
 RegisterCommand('admin', function()
+
+    if spectating then
+        TriggerEvent('rp_admin:stopSpectate')
+        return
+    end
 
     adminOpen = not adminOpen
 
@@ -109,7 +116,8 @@ RegisterNUICallback(
         TriggerServerEvent(
             'rp_admin:playerAction',
             playerId,
-            action
+            action,
+            tostring(data.value or '')
         )
 
 
@@ -155,6 +163,44 @@ RegisterNetEvent(
     end
 )
 
+
+-- =========================================
+-- SPECTATE
+-- =========================================
+
+RegisterNetEvent('rp_admin:startSpectate', function(targetServerId)
+
+    local targetPlayer = GetPlayerFromServerId(tonumber(targetServerId))
+
+    if targetPlayer == -1 then
+        TriggerEvent('qbx_core:Notify', 'Player is not available to spectate.', 'error')
+        return
+    end
+
+    local targetPed = GetPlayerPed(targetPlayer)
+
+    if targetPed == 0 or not DoesEntityExist(targetPed) then
+        TriggerEvent('qbx_core:Notify', 'Player ped is not available.', 'error')
+        return
+    end
+
+    spectating = true
+    spectateTarget = targetPlayer
+
+    NetworkSetInSpectatorMode(true, targetPed)
+    SetEntityVisible(PlayerPedId(), false, false)
+    TriggerEvent('qbx_core:Notify', 'Spectating player ID ' .. tostring(targetServerId) .. '. Press F10 to stop.', 'inform')
+end)
+
+RegisterNetEvent('rp_admin:stopSpectate', function()
+    if not spectating then return end
+
+    NetworkSetInSpectatorMode(false, 0)
+    SetEntityVisible(PlayerPedId(), true, false)
+    spectating = false
+    spectateTarget = nil
+    TriggerEvent('qbx_core:Notify', 'Stopped spectating.', 'inform')
+end)
 
 -- =========================================
 -- FREEZE
@@ -407,45 +453,35 @@ RegisterNetEvent(
     end
 )
 
--- =========================================
--- SERVER ACTION NUI CALLBACK
--- =========================================
-
 RegisterNUICallback('serverAction', function(data, cb)
+    print('^3[RP_ADMIN] serverAction NUI callback received^7')
 
     local action = tostring(data.action or '')
     local message = tostring(data.message or '')
 
-    print('^3[RP_ADMIN] Server action: ' .. action .. '^7')
+    print('^3[RP_ADMIN] Action: ' .. action .. '^7')
     print('^3[RP_ADMIN] Message: ' .. message .. '^7')
 
-    if action == 'announcement' then
-
-        TriggerServerEvent(
-            'rp_admin:sendAnnouncement',
-            message
-        )
-
-    end
+    TriggerServerEvent(
+        'rp_admin:serverAction',
+        action,
+        message
+    )
 
     cb('ok')
 end)
-
 
 RegisterNetEvent('rp_admin:receiveAnnouncement', function(message)
 
     message = tostring(message or '')
 
-    print('^2[RP_ADMIN CLIENT] ANNOUNCEMENT RECEIVED!^7')
-    print('^2[RP_ADMIN CLIENT] Message: ' .. message .. '^7')
+    print('^2[RP_ADMIN] Announcement received: ' .. message .. '^7')
 
-    -- Send to our custom NUI notification
     SendNUIMessage({
         action = 'announcement',
         message = message
     })
 
-    -- GTA notification sound
     PlaySoundFrontend(
         -1,
         'CONFIRM_BEEP',
@@ -453,4 +489,19 @@ RegisterNetEvent('rp_admin:receiveAnnouncement', function(message)
         true
     )
 
+end)
+
+RegisterNUICallback('serverAction', function(data, cb)
+
+    local action = tostring(data.action or '')
+    local message = tostring(data.message or '')
+
+    print('^3[RP_ADMIN] Sending server event...^7')
+
+    TriggerServerEvent(
+        'rp_admin:testServerEvent',
+        action .. ' | ' .. message
+    )
+
+    cb('ok')
 end)

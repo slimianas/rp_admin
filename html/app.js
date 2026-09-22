@@ -1,5 +1,7 @@
 let isOpen = false;
 let selectedPlayer = null;
+let grantAction = null;
+
 
 
 /* =========================================
@@ -18,12 +20,6 @@ window.addEventListener('message', function (event) {
 
         document.body.style.display = 'block';
 
-const panel = document.getElementById('admin-panel');
-
-if (panel) {
-    panel.style.display = 'flex';
-}
-
         requestPlayers();
     }
 
@@ -37,13 +33,6 @@ if (panel) {
         closePlayerModal();
 
         document.body.style.display = 'none';
-
-        const panel = document.getElementById('admin-panel');
-
-if (panel) {
-    panel.style.display = 'none';
-}
-
     }
 
 
@@ -66,13 +55,9 @@ if (panel) {
         );
     }
 
-        /* SERVER ANNOUNCEMENT */
-
     if (data.action === 'announcement') {
-
-        showAnnouncement(data.message || '');
-
-    }
+    showAnnouncement(data.message || '');
+}
 
 });
 
@@ -356,37 +341,22 @@ function closePlayerModal() {
 
 function performPlayerAction(action) {
 
-    if (!selectedPlayer) {
+    if (!selectedPlayer) return;
+
+    const playerId = Number(selectedPlayer.id);
+
+    if (action === 'give_item' || action === 'give_money') {
+        openGrantModal(action);
         return;
     }
 
+    fetch(`https://${GetParentResourceName()}/playerAction`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: action, playerId: playerId })
+    }).catch(function () {});
 
-    const playerId =
-        Number(selectedPlayer.id);
-
-
-    fetch(
-        `https://${GetParentResourceName()}/playerAction`,
-        {
-            method: 'POST',
-
-            headers: {
-                'Content-Type': 'application/json'
-            },
-
-            body: JSON.stringify({
-                action: action,
-                playerId: playerId
-            })
-        }
-    ).catch(function () {});
-
-
-    if (
-        action === 'kick' ||
-        action === 'teleport'
-    ) {
-
+    if (action === 'kick' || action === 'teleport' || action === 'spectate') {
         closePlayerModal();
     }
 }
@@ -423,6 +393,65 @@ document.addEventListener(
     }
 );
 
+
+/* =========================================
+   GRANT MODAL
+========================================= */
+const grantModal = document.getElementById('grant-modal');
+const grantTitle = document.getElementById('grant-title');
+const grantSubtitle = document.getElementById('grant-subtitle');
+const grantLabel = document.getElementById('grant-label');
+const grantHint = document.getElementById('grant-hint');
+const grantValue = document.getElementById('grant-value');
+
+function openGrantModal(action) {
+    if (!selectedPlayer || !grantModal) return;
+    grantAction = action;
+    const money = action === 'give_money';
+    grantTitle.textContent = money ? 'Give Money' : 'Give Item';
+    grantSubtitle.textContent = 'ID ' + selectedPlayer.id + ' · ' + selectedPlayer.name;
+    grantLabel.textContent = money ? 'Amount' : 'Item name';
+    grantValue.type = money ? 'number' : 'text';
+    grantValue.placeholder = money ? 'e.g. 5000' : 'e.g. water';
+    grantHint.textContent = money ? 'Enter amount. Money type defaults to cash.' : 'Enter the exact ox_inventory item name.';
+    grantValue.value = '';
+    grantModal.classList.add('visible');
+    setTimeout(function(){ grantValue.focus(); }, 50);
+}
+
+function closeGrantModal() {
+    if (!grantModal) return;
+    grantModal.classList.remove('visible');
+    grantAction = null;
+}
+
+function submitGrant() {
+    if (!selectedPlayer || !grantAction || !grantValue) return;
+    const value = grantValue.value.trim();
+    if (!value) return;
+
+    const payload = {
+        action: grantAction,
+        playerId: Number(selectedPlayer.id),
+        value: value
+    };
+
+    fetch(`https://${GetParentResourceName()}/playerAction`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    }).catch(function () {});
+
+    closeGrantModal();
+}
+
+const grantClose = document.getElementById('grant-close');
+const grantCancel = document.getElementById('grant-cancel');
+const grantConfirm = document.getElementById('grant-confirm');
+if (grantClose) grantClose.addEventListener('click', closeGrantModal);
+if (grantCancel) grantCancel.addEventListener('click', closeGrantModal);
+if (grantConfirm) grantConfirm.addEventListener('click', submitGrant);
+if (grantValue) grantValue.addEventListener('keydown', function(e){ if(e.key === 'Enter') submitGrant(); });
 
 /* =========================================
    MODAL CLOSE
@@ -961,23 +990,15 @@ if (announcementSend) {
 
 }
 
-/* =========================================
-   SERVER ANNOUNCEMENT
-========================================= */
-
 function showAnnouncement(message) {
-
     const notification = document.createElement('div');
 
     notification.className = 'rp-announcement';
 
     notification.innerHTML = `
-        <div class="rp-announcement-icon">
-            !
-        </div>
+        <div class="rp-announcement-icon">!</div>
 
         <div class="rp-announcement-content">
-
             <div class="rp-announcement-title">
                 SERVER ANNOUNCEMENT
             </div>
@@ -985,7 +1006,6 @@ function showAnnouncement(message) {
             <div class="rp-announcement-message">
                 ${escapeHtml(message)}
             </div>
-
         </div>
 
         <div class="rp-announcement-progress"></div>
@@ -993,46 +1013,18 @@ function showAnnouncement(message) {
 
     document.body.appendChild(notification);
 
-    /*
-     * The admin panel normally makes body hidden
-     * when F10 is closed, so temporarily allow the
-     * notification to be displayed.
-     */
-
-    document.body.style.display = 'block';
-
-    if (!isOpen) {
-        const panel = document.getElementById('admin-panel');
-
-        if (panel) {
-            panel.style.display = 'none';
-        }
-    }
-
-    /* Animate in */
-
     requestAnimationFrame(function () {
         notification.classList.add('show');
     });
 
-    /* Remove after 8 seconds */
-
     setTimeout(function () {
-
         notification.classList.remove('show');
 
         setTimeout(function () {
-
             notification.remove();
-
-            if (!isOpen) {
-                document.body.style.display = 'none';
-            }
-
         }, 350);
 
     }, 8000);
-
 }
 
 

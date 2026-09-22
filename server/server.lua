@@ -1,5 +1,10 @@
+print('^2[RP_ADMIN SERVER] server.lua LOADED successfully^7')
 local function isAdmin(source)
-    return IsPlayerAceAllowed(source, 'rp_admin.use')
+
+    return IsPlayerAceAllowed(
+        source,
+        'rp_admin.use'
+    )
 end
 
 
@@ -122,7 +127,7 @@ RegisterNetEvent(
 
 RegisterNetEvent(
     'rp_admin:playerAction',
-    function(targetId, action)
+    function(targetId, action, value, itemAmount)
 
         local adminSource = source
 
@@ -329,6 +334,76 @@ RegisterNetEvent(
 
 
         -- =================================
+        -- SPECTATE
+        -- =================================
+
+        elseif action == 'spectate' then
+
+            TriggerClientEvent(
+                'rp_admin:startSpectate',
+                adminSource,
+                targetId
+            )
+
+            TriggerClientEvent(
+                'rp_admin:actionResult',
+                adminSource,
+                true,
+                'Spectate started.'
+            )
+
+
+        -- =================================
+        -- GIVE MONEY
+        -- =================================
+
+        elseif action == 'give_money' then
+
+            local amount = tonumber(value)
+
+            if not amount or amount <= 0 or amount > 10000000 then
+                TriggerClientEvent('rp_admin:actionResult', adminSource, false, 'Invalid money amount.')
+                return
+            end
+
+            local success = exports.qbx_core:AddMoney(targetId, 'cash', math.floor(amount), 'RP Admin')
+
+            TriggerClientEvent(
+                'rp_admin:actionResult',
+                adminSource,
+                success == true,
+                success and ('Gave $' .. math.floor(amount) .. ' cash.') or 'Failed to give money.'
+            )
+
+
+        -- =================================
+        -- GIVE ITEM
+        -- =================================
+
+        elseif action == 'give_item' then
+
+            local itemName = tostring(value or ''):lower():gsub('%s+', '')
+            local amount = 1
+
+            if itemName == '' or #itemName > 80 then
+                TriggerClientEvent('rp_admin:actionResult', adminSource, false, 'Invalid item name.')
+                return
+            end
+
+            amount = math.floor(amount)
+            if amount < 1 or amount > 1000 then amount = 1 end
+
+            local success = targetPlayer.Functions.AddItem(itemName, amount)
+
+            TriggerClientEvent(
+                'rp_admin:actionResult',
+                adminSource,
+                success == true,
+                success and ('Gave ' .. amount .. 'x ' .. itemName .. '.') or 'Failed to give item.'
+            )
+
+
+        -- =================================
         -- KICK
         -- =================================
 
@@ -508,31 +583,46 @@ RegisterNetEvent(
     end
 )
 
-RegisterNetEvent('rp_admin:sendAnnouncement', function(message)
+RegisterNetEvent('rp_admin:serverAction', function(action, message)
 
+    local source = source
+
+    print('^3[RP_ADMIN] serverAction received from ID ' .. tostring(source) .. '^7')
+    print('^3[RP_ADMIN] Action: ' .. tostring(action) .. '^7')
+    print('^3[RP_ADMIN] Message: ' .. tostring(message) .. '^7')
+
+    if not isAdmin(source) then
+        print('^1[RP_ADMIN] Permission denied for ID ' .. tostring(source) .. '^7')
+        return
+    end
+
+    if action == 'announcement' then
+
+        message = tostring(message or ''):sub(1, 200)
+
+        if message == '' then
+            print('^1[RP_ADMIN] Empty announcement^7')
+            return
+        end
+
+        print('^2[RP_ADMIN] Broadcasting announcement: ' .. message .. '^7')
+
+        TriggerClientEvent(
+            'rp_admin:receiveAnnouncement',
+            -1,
+            message
+        )
+
+    end
+
+end)
+
+RegisterNetEvent('rp_admin:testServerEvent', function(message)
     local src = source
 
-    print('^2[RP_ADMIN SERVER] ANNOUNCEMENT EVENT RECEIVED!^7')
-    print('^3[RP_ADMIN SERVER] Player: ' .. tostring(src) .. '^7')
-    print('^3[RP_ADMIN SERVER] Message: ' .. tostring(message) .. '^7')
-
-    if not isAdmin(src) then
-        print('^1[RP_ADMIN SERVER] Permission denied.^7')
-        return
-    end
-
-    message = tostring(message or ''):sub(1, 200)
-
-    if message == '' then
-        return
-    end
-
-    print('^2[RP_ADMIN SERVER] Broadcasting announcement!^7')
-
-    TriggerClientEvent(
-        'rp_admin:receiveAnnouncement',
-        -1,
-        message
-    )
-
+    print('^2========================================^7')
+    print('^2[RP_ADMIN SERVER] EVENT RECEIVED!^7')
+    print('^3Player ID: ' .. tostring(src) .. '^7')
+    print('^3Message: ' .. tostring(message) .. '^7')
+    print('^2========================================^7')
 end)

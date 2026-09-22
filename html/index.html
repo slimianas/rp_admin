@@ -914,6 +914,21 @@
                 ADMIN ACTIONS
             </div>
 
+            <div class="admin-action-row">
+                <button class="modal-admin-action" data-action="spectate">
+                    <span>◉</span>
+                    <div><strong>Spectate Player</strong><small>Watch this player without teleporting</small></div>
+                </button>
+                <button class="modal-admin-action" data-action="give_money">
+                    <span>＄</span>
+                    <div><strong>Give Money</strong><small>Give cash to this player</small></div>
+                </button>
+                <button class="modal-admin-action" data-action="give_item">
+                    <span>▣</span>
+                    <div><strong>Give Item</strong><small>Give an inventory item</small></div>
+                </button>
+            </div>
+
 
             <div class="admin-action-row">
 
@@ -952,6 +967,35 @@
 
     </div>
 
+</div>
+
+<!-- =========================================
+     PLAYER GRANT MODAL
+========================================= -->
+<div id="grant-modal" class="modal-overlay">
+    <div class="grant-modal">
+        <div class="modal-header">
+            <div>
+                <div class="modal-title" id="grant-title">Grant to Player</div>
+                <div class="modal-subtitle" id="grant-subtitle">ID 0</div>
+            </div>
+            <button class="modal-close" id="grant-close">×</button>
+        </div>
+
+        <div class="grant-body">
+            <label id="grant-label">Value</label>
+            <input id="grant-value" class="grant-input" type="text" autocomplete="off">
+            <div class="grant-hint" id="grant-hint"></div>
+        </div>
+
+        <div class="modal-footer">
+            <span>Admin action</span>
+            <div class="grant-buttons">
+                <button id="grant-cancel">Cancel</button>
+                <button id="grant-confirm" class="grant-confirm">Confirm</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
