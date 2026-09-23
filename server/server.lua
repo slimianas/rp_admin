@@ -1032,3 +1032,64 @@ RegisterNetEvent('rp_admin:restartServer', function(reason, delay)
     end)
 
 end)
+
+-- =========================================
+-- STAFF ACTIONS
+-- =========================================
+
+RegisterNetEvent(
+    'rp_admin:staffAction',
+    function(action, enabled)
+
+        local source = source
+
+        if not isAdmin(source) then
+
+            print(
+                '^1[RP_ADMIN] Staff action denied for ID '
+                .. tostring(source)
+                .. '^7'
+            )
+
+            return
+        end
+
+        action =
+            tostring(action or '')
+
+        enabled =
+            enabled == true
+
+        local allowedActions = {
+
+            mode = true,
+            noclip = true,
+            godmode = true,
+            invisible = true,
+            blips = true
+
+        }
+
+        if not allowedActions[action] then
+            return
+        end
+
+        print(
+            '^2[RP_ADMIN] Staff action: '
+            .. action
+            .. ' = '
+            .. tostring(enabled)
+            .. ' [ID '
+            .. tostring(source)
+            .. ']^7'
+        )
+
+        TriggerClientEvent(
+            'rp_admin:applyStaffAction',
+            source,
+            action,
+            enabled
+        )
+
+    end
+)

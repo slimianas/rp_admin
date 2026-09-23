@@ -770,3 +770,603 @@ RegisterNUICallback('restartServer', function(data, cb)
     cb('ok')
 
 end)
+
+-- =========================================
+-- STAFF ACTION CALLBACK
+-- =========================================
+
+RegisterNUICallback(
+    'staffAction',
+    function(data, cb)
+
+        local action =
+            tostring(data.action or '')
+
+        local enabled =
+            data.enabled == true
+
+        if action == '' then
+            cb('ok')
+            return
+        end
+
+        TriggerServerEvent(
+            'rp_admin:staffAction',
+            action,
+            enabled
+        )
+
+        cb('ok')
+
+    end
+)
+
+-- =========================================
+-- STAFF MODE STATE
+-- =========================================
+
+local staffMode = false
+local staffNoclip = false
+local staffGodmode = false
+local staffInvisible = false
+local staffBlips = false
+
+local staffBlipHandles = {}
+
+
+-- =========================================
+-- STAFF MODE
+-- =========================================
+
+local staffMode = false
+local staffNoclip = false
+local staffGodmode = false
+local staffInvisible = false
+local staffBlips = false
+
+local staffBlipHandles = {}
+
+
+-- =========================================
+-- CLEAR STAFF BLIPS
+-- =========================================
+
+local function ClearStaffBlips()
+
+    for _, blip in pairs(staffBlipHandles) do
+
+        if DoesBlipExist(blip) then
+            RemoveBlip(blip)
+        end
+
+    end
+
+    staffBlipHandles = {}
+
+end
+
+
+-- =========================================
+-- STAFF ACTION
+-- =========================================
+
+RegisterNetEvent(
+    'rp_admin:applyStaffAction',
+    function(action, enabled)
+
+        enabled = enabled == true
+
+        if action == 'mode' then
+
+            staffMode = enabled
+
+            if not staffMode then
+
+                staffNoclip = false
+                staffGodmode = false
+                staffInvisible = false
+
+                local ped =
+                    PlayerPedId()
+
+                SetEntityInvincible(
+                    ped,
+                    false
+                )
+
+                SetPlayerInvincible(
+                    PlayerId(),
+                    false
+                )
+
+                SetEntityProofs(
+                    ped,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                )
+
+                SetPedCanRagdoll(
+                    ped,
+                    true
+                )
+
+                SetEntityVisible(
+                    ped,
+                    true,
+                    false
+                )
+
+                SetEntityCollision(
+                    ped,
+                    true,
+                    true
+                )
+
+                ClearStaffBlips()
+
+            end
+
+
+        elseif action == 'noclip' then
+
+            staffNoclip = enabled
+
+
+        elseif action == 'godmode' then
+
+            staffGodmode = enabled
+
+
+        elseif action == 'invisible' then
+
+            staffInvisible = enabled
+
+
+        elseif action == 'blips' then
+
+            staffBlips = enabled
+
+            if not staffBlips then
+                ClearStaffBlips()
+            end
+
+        end
+
+    end
+)
+
+
+-- =========================================
+-- GODMODE / INVISIBLE
+-- =========================================
+
+CreateThread(function()
+
+    while true do
+
+        local ped =
+            PlayerPedId()
+
+
+        -- GODMODE
+
+        if staffGodmode then
+
+            SetEntityInvincible(
+                ped,
+                true
+            )
+
+            SetPlayerInvincible(
+                PlayerId(),
+                true
+            )
+
+            SetEntityProofs(
+                ped,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+            )
+
+            SetPedCanRagdoll(
+                ped,
+                false
+            )
+
+        else
+
+            SetEntityInvincible(
+                ped,
+                false
+            )
+
+            SetPlayerInvincible(
+                PlayerId(),
+                false
+            )
+
+            SetEntityProofs(
+                ped,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+            )
+
+            SetPedCanRagdoll(
+                ped,
+                true
+            )
+
+        end
+
+
+        -- INVISIBLE
+
+        if staffInvisible then
+
+            SetEntityVisible(
+                ped,
+                false,
+                false
+            )
+
+        else
+
+            SetEntityVisible(
+                ped,
+                true,
+                false
+            )
+
+        end
+
+
+        Wait(0)
+
+    end
+
+end)
+
+
+-- =========================================
+-- NOCLIP
+-- =========================================
+
+local function rotationToDirection(rotation)
+
+    local rotZ =
+        math.rad(rotation.z)
+
+    local rotX =
+        math.rad(rotation.x)
+
+    local cosX =
+        math.abs(
+            math.cos(rotX)
+        )
+
+    return vector3(
+        -math.sin(rotZ) * cosX,
+        math.cos(rotZ) * cosX,
+        math.sin(rotX)
+    )
+
+end
+
+
+CreateThread(function()
+
+    while true do
+
+        if staffMode and staffNoclip then
+
+            local ped =
+                PlayerPedId()
+
+            local coords =
+                GetEntityCoords(ped)
+
+            local camRotation =
+                GetGameplayCamRot(2)
+
+            local direction =
+                rotationToDirection(
+                    camRotation
+                )
+
+            local speed = 1.5
+
+
+            -- SHIFT = FAST
+
+            if IsControlPressed(
+                0,
+                21
+            ) then
+
+                speed = 4.0
+
+            end
+
+
+            -- CTRL = SLOW
+
+            if IsControlPressed(
+                0,
+                36
+            ) then
+
+                speed = 0.5
+
+            end
+
+
+            -- W = FORWARD
+
+            if IsControlPressed(
+                0,
+                32
+            ) then
+
+                coords =
+                    coords
+                    + direction * speed
+
+            end
+
+
+            -- S = BACKWARD
+
+            if IsControlPressed(
+                0,
+                33
+            ) then
+
+                coords =
+                    coords
+                    - direction * speed
+
+            end
+
+
+            -- SPACE = UP
+
+            if IsControlPressed(
+                0,
+                22
+            ) then
+
+                coords =
+                    coords
+                    + vector3(
+                        0.0,
+                        0.0,
+                        speed
+                    )
+
+            end
+
+
+            -- Q = DOWN
+
+            if IsControlPressed(
+                0,
+                44
+            ) then
+
+                coords =
+                    coords
+                    - vector3(
+                        0.0,
+                        0.0,
+                        speed
+                    )
+
+            end
+
+
+            SetEntityCoordsNoOffset(
+                ped,
+                coords.x,
+                coords.y,
+                coords.z,
+                true,
+                true,
+                true
+            )
+
+            SetEntityVelocity(
+                ped,
+                0.0,
+                0.0,
+                0.0
+            )
+
+            SetEntityCollision(
+                ped,
+                false,
+                false
+            )
+
+            SetEntityInvincible(
+                ped,
+                true
+            )
+
+            Wait(0)
+
+        else
+
+            if staffMode then
+
+                SetEntityCollision(
+                    PlayerPedId(),
+                    true,
+                    true
+                )
+
+            end
+
+            Wait(0)
+
+        end
+
+    end
+
+end)
+
+
+CreateThread(function()
+
+    while true do
+
+        if staffMode and staffNoclip then
+
+            local ped =
+                PlayerPedId()
+
+            local coords =
+                GetEntityCoords(ped)
+
+            local camRotation =
+                GetGameplayCamRot(2)
+
+            local direction =
+                rotationToDirection(
+                    camRotation
+                )
+
+            local speed = 1.5
+
+            if IsControlPressed(
+                0,
+                21
+            ) then
+                speed = 4.0
+            end
+
+            if IsControlPressed(
+                0,
+                36
+            ) then
+                speed = 0.5
+            end
+
+            if IsControlPressed(
+                0,
+                32
+            ) then
+
+                coords =
+                    coords
+                    + direction * speed
+
+            end
+
+            if IsControlPressed(
+                0,
+                33
+            ) then
+
+                coords =
+                    coords
+                    - direction * speed
+
+            end
+
+            if IsControlPressed(
+                0,
+                22
+            ) then
+
+                coords =
+                    coords
+                    + vector3(
+                        0.0,
+                        0.0,
+                        speed
+                    )
+
+            end
+
+            if IsControlPressed(
+                0,
+                44
+            ) then
+
+                coords =
+                    coords
+                    - vector3(
+                        0.0,
+                        0.0,
+                        speed
+                    )
+
+            end
+
+            SetEntityCoordsNoOffset(
+                ped,
+                coords.x,
+                coords.y,
+                coords.z,
+                true,
+                true,
+                true
+            )
+
+            SetEntityVelocity(
+                ped,
+                0.0,
+                0.0,
+                0.0
+            )
+
+            SetEntityCollision(
+                ped,
+                false,
+                false
+            )
+
+            SetEntityInvincible(
+                ped,
+                true
+            )
+
+            Wait(0)
+
+        else
+
+            if staffMode then
+
+                SetEntityCollision(
+                    PlayerPedId(),
+                    true,
+                    true
+                )
+
+            end
+
+            Wait(0)
+
+        end
+
+    end
+
+end)

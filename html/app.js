@@ -1347,6 +1347,314 @@ if (restartConfirm) {
 
 
 /* =========================================
+   STAFF MODE
+========================================= */
+
+const staffModal =
+    document.getElementById('staff-modal');
+
+const staffClose =
+    document.getElementById('staff-close');
+
+const staffCancel =
+    document.getElementById('staff-cancel');
+
+const staffButton =
+    Array.from(
+        document.querySelectorAll('.nav-item')
+    ).find(function (item) {
+        return item.textContent
+            .trim()
+            .toLowerCase()
+            .includes('staff');
+    });
+
+
+function openStaffModal() {
+
+    if (!staffModal) {
+        return;
+    }
+
+    staffModal.classList.add('visible');
+
+}
+
+
+function closeStaffModal() {
+
+    if (!staffModal) {
+        return;
+    }
+
+    staffModal.classList.remove('visible');
+
+}
+
+
+if (staffButton) {
+
+    staffButton.addEventListener(
+        'click',
+        function () {
+
+            openStaffModal();
+
+        }
+    );
+
+}
+
+
+if (staffClose) {
+
+    staffClose.addEventListener(
+        'click',
+        closeStaffModal
+    );
+
+}
+
+
+if (staffCancel) {
+
+    staffCancel.addEventListener(
+        'click',
+        closeStaffModal
+    );
+
+}
+
+
+/* =========================================
+   STAFF TOGGLES
+========================================= */
+
+const staffToggles = {
+
+    mode: {
+        button: document.getElementById('staff-mode-toggle'),
+        switch: document.getElementById('staff-mode-switch')
+    },
+
+    noclip: {
+        button: document.getElementById('staff-noclip-toggle'),
+        switch: document.getElementById('staff-noclip-switch')
+    },
+
+    godmode: {
+        button: document.getElementById('staff-godmode-toggle'),
+        switch: document.getElementById('staff-godmode-switch')
+    },
+
+    invisible: {
+        button: document.getElementById('staff-invisible-toggle'),
+        switch: document.getElementById('staff-invisible-switch')
+    },
+
+    blips: {
+        button: document.getElementById('staff-blips-toggle'),
+        switch: document.getElementById('staff-blips-switch')
+    }
+
+};
+
+
+function toggleStaffControl(control) {
+
+    if (!control || !control.switch) {
+        return;
+    }
+
+    const active =
+        control.switch.classList.toggle('active');
+
+    return active;
+
+}
+
+
+/* STAFF MODE */
+
+if (staffToggles.mode.button) {
+
+    staffToggles.mode.button.addEventListener(
+        'click',
+        function () {
+
+            const enabled =
+                toggleStaffControl(
+                    staffToggles.mode
+                );
+
+            fetch(
+                `https://${GetParentResourceName()}/staffAction`,
+                {
+                    method: 'POST',
+
+                    headers: {
+                        'Content-Type':
+                            'application/json'
+                    },
+
+                    body: JSON.stringify({
+                        action: 'mode',
+                        enabled: enabled
+                    })
+                }
+            ).catch(function () {});
+
+        }
+    );
+
+}
+
+
+/* NOCLIP */
+
+if (staffToggles.noclip.button) {
+
+    staffToggles.noclip.button.addEventListener(
+        'click',
+        function () {
+
+            const enabled =
+                toggleStaffControl(
+                    staffToggles.noclip
+                );
+
+            fetch(
+                `https://${GetParentResourceName()}/staffAction`,
+                {
+                    method: 'POST',
+
+                    headers: {
+                        'Content-Type':
+                            'application/json'
+                    },
+
+                    body: JSON.stringify({
+                        action: 'noclip',
+                        enabled: enabled
+                    })
+                }
+            ).catch(function () {});
+
+        }
+    );
+
+}
+
+
+/* GODMODE */
+
+if (staffToggles.godmode.button) {
+
+    staffToggles.godmode.button.addEventListener(
+        'click',
+        function () {
+
+            const enabled =
+                toggleStaffControl(
+                    staffToggles.godmode
+                );
+
+            fetch(
+                `https://${GetParentResourceName()}/staffAction`,
+                {
+                    method: 'POST',
+
+                    headers: {
+                        'Content-Type':
+                            'application/json'
+                    },
+
+                    body: JSON.stringify({
+                        action: 'godmode',
+                        enabled: enabled
+                    })
+                }
+            ).catch(function () {});
+
+        }
+    );
+
+}
+
+
+/* INVISIBLE */
+
+if (staffToggles.invisible.button) {
+
+    staffToggles.invisible.button.addEventListener(
+        'click',
+        function () {
+
+            const enabled =
+                toggleStaffControl(
+                    staffToggles.invisible
+                );
+
+            fetch(
+                `https://${GetParentResourceName()}/staffAction`,
+                {
+                    method: 'POST',
+
+                    headers: {
+                        'Content-Type':
+                            'application/json'
+                    },
+
+                    body: JSON.stringify({
+                        action: 'invisible',
+                        enabled: enabled
+                    })
+                }
+            ).catch(function () {});
+
+        }
+    );
+
+}
+
+
+/* BLIPS */
+
+if (staffToggles.blips.button) {
+
+    staffToggles.blips.button.addEventListener(
+        'click',
+        function () {
+
+            const enabled =
+                toggleStaffControl(
+                    staffToggles.blips
+                );
+
+            fetch(
+                `https://${GetParentResourceName()}/staffAction`,
+                {
+                    method: 'POST',
+
+                    headers: {
+                        'Content-Type':
+                            'application/json'
+                    },
+
+                    body: JSON.stringify({
+                        action: 'blips',
+                        enabled: enabled
+                    })
+                }
+            ).catch(function () {});
+
+        }
+    );
+
+}
+
+
+/* =========================================
    ESCAPE HTML
 ========================================= */
 
