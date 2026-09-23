@@ -746,3 +746,27 @@ CreateThread(function()
     end
 
 end)
+
+RegisterNUICallback('restartServer', function(data, cb)
+
+    local reason =
+        tostring(data.reason or ''):sub(1, 200)
+
+    if reason == '' then
+        reason = 'Server restarting.'
+    end
+
+    print(
+        '^3[RP_ADMIN] Server restart requested: '
+        .. reason
+        .. '^7'
+    )
+
+    TriggerServerEvent(
+        'rp_admin:restartServer',
+        reason
+    )
+
+    cb('ok')
+
+end)

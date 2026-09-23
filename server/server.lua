@@ -913,3 +913,122 @@ RegisterNetEvent('rp_admin:setServerTime', function(hour, minute)
     )
 
 end)
+
+RegisterNetEvent('rp_admin:restartServer', function(reason, delay)
+
+    local source = source
+
+    if not isAdmin(source) then
+        print(
+            '^1[RP_ADMIN] Restart permission denied for ID '
+            .. tostring(source)
+            .. '^7'
+        )
+        return
+    end
+
+    reason = tostring(reason or ''):sub(1, 200)
+
+    if reason == '' then
+        reason = 'Server maintenance.'
+    end
+
+    delay = tonumber(delay) or 5
+    delay = math.floor(delay)
+
+    if delay ~= 5 and delay ~= 10 and delay ~= 30 then
+        delay = 5
+    end
+
+    print('^1========================================^7')
+    print(
+        '^1[RP_ADMIN] RESTART REQUESTED BY ID '
+        .. tostring(source)
+        .. '^7'
+    )
+    print(
+        '^3[RP_ADMIN] Reason: '
+        .. reason
+        .. '^7'
+    )
+    print(
+        '^3[RP_ADMIN] Delay: '
+        .. tostring(delay)
+        .. ' minutes^7'
+    )
+    print('^1========================================^7')
+
+    TriggerClientEvent(
+        'rp_admin:receiveAnnouncement',
+        -1,
+        'SERVER RESTART: '
+        .. reason
+        .. ' — restarting in '
+        .. tostring(delay)
+        .. ' minutes.'
+    )
+
+    CreateThread(function()
+
+        local remaining = delay
+
+        while remaining > 0 do
+
+            print(
+                '^3[RP_ADMIN] Restart countdown: '
+                .. tostring(remaining)
+                .. ' minute(s) remaining.^7'
+            )
+
+            Wait(60000)
+
+            remaining = remaining - 1
+
+            if remaining == 10
+                or remaining == 5
+                or remaining == 1
+            then
+
+                print(
+                    '^3[RP_ADMIN] Restart countdown: '
+                    .. tostring(remaining)
+                    .. ' minute(s) remaining.^7'
+                )
+
+                TriggerClientEvent(
+                    'rp_admin:receiveAnnouncement',
+                    -1,
+                    'SERVER RESTART: '
+                    .. reason
+                    .. ' — restarting in '
+                    .. tostring(remaining)
+                    .. ' minute'
+                    .. (remaining == 1 and '' or 's')
+                    .. '.'
+                )
+
+            end
+
+        end
+
+        print('^1[RP_ADMIN] COUNTDOWN FINISHED.^7')
+
+        TriggerClientEvent(
+            'rp_admin:receiveAnnouncement',
+            -1,
+            'SERVER RESTART: '
+            .. reason
+            .. ' — restarting now.'
+        )
+
+        Wait(3000)
+
+        print('^1[RP_ADMIN] EXECUTING QUIT COMMAND NOW.^7')
+
+        ExecuteCommand(
+            'quit "Server restarting - please reconnect shortly."'
+        )
+
+    end)
+
+end)

@@ -68,20 +68,18 @@ window.addEventListener('message', function (event) {
 
 function requestPlayers() {
 
-fetch(
-    `https://${GetParentResourceName()}/setWeather`,
-    {
-        method: 'POST',
+    fetch(
+        `https://${GetParentResourceName()}/requestPlayers`,
+        {
+            method: 'POST',
 
-        headers: {
-            'Content-Type': 'application/json'
-        },
+            headers: {
+                'Content-Type': 'application/json'
+            },
 
-        body: JSON.stringify({
-            weather: weather
-        })
-    }
-).catch(function () {});
+            body: JSON.stringify({})
+        }
+    ).catch(function () {});
 }
 
 
@@ -1088,18 +1086,15 @@ document.querySelectorAll(
                 button.dataset.weather;
 
             fetch(
-                `https://${GetParentResourceName()}/serverAction`,
+                `https://${GetParentResourceName()}/setWeather`,
                 {
                     method: 'POST',
-
                     headers: {
                         'Content-Type':
                             'application/json'
                     },
-
                     body: JSON.stringify({
-                        action: 'weather',
-                        message: weather
+                        weather: weather
                     })
                 }
             ).catch(function () {});
@@ -1235,6 +1230,119 @@ if (timeCancel) {
         'click',
         closeTimeModal
     );
+}
+
+/* =========================================
+   SERVER RESTART
+========================================= */
+
+const restartModal =
+    document.getElementById('restart-modal');
+
+const restartButton =
+    document.getElementById('restart-server-button');
+
+const restartClose =
+    document.getElementById('restart-close');
+
+const restartCancel =
+    document.getElementById('restart-cancel');
+
+const restartConfirm =
+    document.getElementById('restart-confirm');
+
+    const restartDelay =
+    document.getElementById('restart-delay');
+
+
+function openRestartModal() {
+
+    if (!restartModal) return;
+
+    restartModal.classList.add('visible');
+
+}
+
+
+function closeRestartModal() {
+
+    if (!restartModal) return;
+
+    restartModal.classList.remove('visible');
+
+}
+
+
+if (restartButton) {
+
+    restartButton.addEventListener(
+        'click',
+        function () {
+
+            openRestartModal();
+
+        }
+    );
+
+}
+
+
+if (restartClose) {
+
+    restartClose.addEventListener(
+        'click',
+        closeRestartModal
+    );
+
+}
+
+
+if (restartCancel) {
+
+    restartCancel.addEventListener(
+        'click',
+        closeRestartModal
+    );
+
+}
+
+
+if (restartConfirm) {
+
+    restartConfirm.addEventListener(
+        'click',
+        function () {
+
+            const reasonInput =
+                document.getElementById('restart-reason');
+
+            const reason =
+                reasonInput
+                    ? reasonInput.value.trim()
+                    : '';
+
+            fetch(
+                `https://${GetParentResourceName()}/restartServer`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type':
+                            'application/json'
+                    },
+                   body: JSON.stringify({
+    reason: reason,
+    delay: restartDelay
+        ? Number(restartDelay.value)
+        : 5
+})
+                }
+            ).catch(function () {});
+
+            closeRestartModal();
+
+        }
+    );
+
 }
 
 
