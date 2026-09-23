@@ -2487,3 +2487,111 @@ button {
     color: #ffffff;
     border-color: rgba(255, 255, 255, 0.14);
 }
+
+/* =========================================
+   GRANT MODAL
+========================================= */
+
+.grant-modal {
+    width: 520px;
+    max-width: 92%;
+    background: #0d1420;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.55);
+    overflow: hidden;
+}
+
+.grant-body {
+    padding: 22px 24px 24px;
+}
+
+.grant-body label {
+    display: block;
+    margin-bottom: 9px;
+    color: #aeb8ca;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+}
+
+.grant-input {
+    width: 100%;
+    height: 46px;
+    box-sizing: border-box;
+    padding: 0 13px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 9px;
+
+    background: rgba(255, 255, 255, 0.035);
+    color: #ffffff;
+
+    font-size: 13px;
+    outline: none;
+
+    transition: all 0.2s ease;
+}
+
+.grant-input::placeholder {
+    color: #667085;
+}
+
+.grant-input:focus {
+    border-color: rgba(80, 140, 255, 0.5);
+    background: rgba(80, 140, 255, 0.06);
+}
+
+.grant-hint {
+    margin-top: 9px;
+    color: #7f8ba3;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.grant-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#grant-cancel {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
+    color: #aeb8ca;
+
+    padding: 9px 18px;
+    border-radius: 8px;
+
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+#grant-cancel:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.14);
+}
+
+#grant-confirm {
+    border: 1px solid rgba(70, 130, 255, 0.35);
+    background: rgba(70, 130, 255, 0.15);
+    color: #ffffff;
+
+    padding: 9px 18px;
+    border-radius: 8px;
+
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+#grant-confirm:hover {
+    background: rgba(70, 130, 255, 0.25);
+    border-color: rgba(70, 130, 255, 0.5);
+}
