@@ -845,6 +845,155 @@ local function ClearStaffBlips()
 
 end
 
+-- =========================================
+-- UPDATE STAFF BLIPS
+-- =========================================
+
+local function UpdateStaffBlips()
+
+    if not staffMode or not staffBlips then
+        ClearStaffBlips()
+        return
+    end
+
+    local activePlayers = GetActivePlayers()
+    local activeServerIds = {}
+
+    for _, player in ipairs(activePlayers) do
+
+        local serverId =
+            GetPlayerServerId(player)
+
+        activeServerIds[serverId] = true
+
+        -- Don't create a blip for ourselves
+        if player ~= PlayerId() then
+
+            local ped =
+                GetPlayerPed(player)
+
+            if ped ~= 0
+                and DoesEntityExist(ped)
+            then
+
+                local blip =
+                    staffBlipHandles[serverId]
+
+                if not blip
+                    or not DoesBlipExist(blip)
+                then
+
+                    blip =
+                        AddBlipForEntity(ped)
+
+                    staffBlipHandles[serverId] =
+                        blip
+
+                    SetBlipSprite(
+                        blip,
+                        1
+                    )
+
+                    SetBlipColour(
+                        blip,
+                        3
+                    )
+
+                    SetBlipScale(
+                        blip,
+                        0.80
+                    )
+
+                    SetBlipDisplay(
+                        blip,
+                        4
+                    )
+
+                    SetBlipAsShortRange(
+                        blip,
+                        false
+                    )
+
+                    ShowHeadingIndicatorOnBlip(
+                        blip,
+                        true
+                    )
+
+                    BeginTextCommandSetBlipName(
+                        'STRING'
+                    )
+
+                    AddTextComponentString(
+                        'Player ID '
+                        .. tostring(serverId)
+                        .. ' - '
+                        .. (
+                            GetPlayerName(player)
+                            or 'Player'
+                        )
+                    )
+
+                    EndTextCommandSetBlipName(
+                        blip
+                    )
+
+                end
+
+            end
+
+        end
+
+    end
+
+
+    -- Remove blips for players who left
+    for serverId, blip in pairs(
+        staffBlipHandles
+    ) do
+
+        if not activeServerIds[serverId] then
+
+            if DoesBlipExist(blip) then
+                RemoveBlip(blip)
+            end
+
+            staffBlipHandles[serverId] =
+                nil
+
+        end
+
+    end
+
+end
+
+-- =========================================
+-- STAFF BLIP THREAD
+-- =========================================
+
+CreateThread(function()
+
+    while true do
+
+        if staffMode and staffBlips then
+
+            UpdateStaffBlips()
+
+            Wait(500)
+
+        else
+
+            if next(staffBlipHandles) then
+                ClearStaffBlips()
+            end
+
+            Wait(1000)
+
+        end
+
+    end
+
+end)
+
 
 -- =========================================
 -- STAFF ACTION
