@@ -851,9 +851,13 @@ document.querySelectorAll('[data-server-action]').forEach(function (button) {
          * Announcement has its own modal and handler.
          * Do not send it here.
          */
-        if (action === 'announcement') {
-            return;
-        }
+       if (
+    action === 'announcement' ||
+    action === 'weather' ||
+    action === 'time'
+) {
+    return;
+}
 
         console.log('[RP_ADMIN] Server action:', action);
 
@@ -1133,6 +1137,104 @@ if (weatherCancel) {
         closeWeatherModal
     );
 
+}
+
+
+/* =========================
+   SERVER TIME
+   ========================= */
+
+const timeModal =
+    document.getElementById('time-modal');
+
+function openTimeModal() {
+    if (!timeModal) return;
+    timeModal.classList.add('visible');
+}
+
+function closeTimeModal() {
+    if (!timeModal) return;
+    timeModal.classList.remove('visible');
+}
+
+const timeButton =
+    document.getElementById('time-button');
+
+if (timeButton) {
+    timeButton.addEventListener('click', function () {
+        openTimeModal();
+    });
+}
+
+const setServerTimeButton =
+    document.getElementById('set-server-time');
+
+if (setServerTimeButton) {
+
+    setServerTimeButton.addEventListener(
+        'click',
+        function () {
+
+            const hour =
+                Number(
+                    document.getElementById('server-hour').value
+                );
+
+            const minute =
+                Number(
+                    document.getElementById('server-minute').value
+                );
+
+            if (
+                !Number.isInteger(hour) ||
+                !Number.isInteger(minute) ||
+                hour < 0 ||
+                hour > 23 ||
+                minute < 0 ||
+                minute > 59
+            ) {
+                return;
+            }
+
+            fetch(
+                `https://${GetParentResourceName()}/setServerTime`,
+                {
+                    method: 'POST',
+
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+
+                    body: JSON.stringify({
+                        hour: hour,
+                        minute: minute
+                    })
+                }
+            ).catch(function () {});
+
+            closeTimeModal();
+        }
+    );
+}
+
+const timeClose =
+    document.getElementById('time-close');
+
+if (timeClose) {
+    timeClose.addEventListener(
+        'click',
+        closeTimeModal
+    );
+}
+
+const timeCancel =
+    document.getElementById('time-cancel');
+
+if (timeCancel) {
+    timeCancel.addEventListener(
+        'click',
+        closeTimeModal
+    );
 }
 
 

@@ -790,16 +790,21 @@
 </button>
 
 
-                <button class="server-action" data-server-action="time">
-                    <div class="server-action-icon time-icon">
-                        ◷
-                    </div>
+<button
+    class="server-action"
+    id="time-button"
+    type="button"
+    data-server-action="time"
+>
+    <div class="server-action-icon time-icon">
+        ◷
+    </div>
 
-                    <div>
-                        <strong>Time</strong>
-                        <span>Change the server time</span>
-                    </div>
-                </button>
+    <div>
+        <strong>Time</strong>
+        <span>Change the server time</span>
+    </div>
+</button>
 
             </div>
 
@@ -842,23 +847,152 @@
     </div>
 </div>
 
-<div id="announcement-modal" class="modal-overlay">
+<!-- TIME MODAL -->
+
+<div id="time-modal" class="modal-overlay">
+
     <div class="announcement-modal">
 
         <div class="modal-header">
+
             <div class="modal-player">
-                <div class="modal-avatar announcement-avatar">!</div>
+
+                <div class="modal-avatar">
+                    ◷
+                </div>
 
                 <div>
-                    <div class="modal-title">Server Announcement</div>
+                    <div class="modal-title">
+                        Server Time
+                    </div>
+
+                    <div class="modal-subtitle">
+                        Set the current server time
+                    </div>
+                </div>
+
+            </div>
+
+            <button
+                class="modal-close"
+                id="time-close"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div class="announcement-body">
+
+            <div class="modal-section-title">
+                SELECT TIME
+            </div>
+
+            <div class="time-inputs">
+
+                <div class="time-input-group">
+
+                    <label>HOUR</label>
+
+                    <input
+                        id="server-hour"
+                        type="number"
+                        min="0"
+                        max="23"
+                        value="12"
+                    >
+
+                </div>
+
+                <div class="time-separator">
+                    :
+                </div>
+
+                <div class="time-input-group">
+
+                    <label>MINUTE</label>
+
+                    <input
+                        id="server-minute"
+                        type="number"
+                        min="0"
+                        max="59"
+                        value="00"
+                    >
+
+                </div>
+
+            </div>
+
+            <button
+                id="set-server-time"
+                class="time-apply-button"
+                type="button"
+            >
+                Apply Server Time
+            </button>
+
+        </div>
+
+        <div class="modal-footer">
+
+            <span>
+                Server time control
+            </span>
+
+            <button
+                id="time-cancel"
+                type="button"
+            >
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="announcement-modal" class="modal-overlay">
+
+    <div class="announcement-modal">
+
+        <!-- HEADER -->
+
+        <div class="modal-header">
+
+            <div class="modal-player">
+
+                <div class="modal-avatar announcement-avatar">
+                    !
+                </div>
+
+                <div>
+                    <div class="modal-title">
+                        Server Announcement
+                    </div>
+
                     <div class="modal-subtitle">
                         Send a message to all players
                     </div>
                 </div>
+
             </div>
 
-            <button class="modal-close" id="announcement-close">×</button>
+            <button
+                class="modal-close"
+                id="announcement-close"
+                type="button"
+            >
+                ×
+            </button>
+
         </div>
+
+
+        <!-- BODY -->
 
         <div class="announcement-body">
 
@@ -874,22 +1008,50 @@
             ></textarea>
 
             <div class="announcement-counter">
-                <span>Visible to all players</span>
-                <span><b id="announcement-count">0</b>/200</span>
+
+                <span>
+                    Visible to all players
+                </span>
+
+                <span>
+                    <b id="announcement-count">0</b>/200
+                </span>
+
             </div>
 
         </div>
 
+
+        <!-- FOOTER -->
+
         <div class="modal-footer">
-            <span>Server announcement</span>
+
+            <span>
+                Server announcement
+            </span>
 
             <div class="announcement-footer-actions">
-                <button id="announcement-cancel">Cancel</button>
-                <button id="announcement-send">Send Announcement</button>
+
+                <button
+                    id="announcement-cancel"
+                    type="button"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    id="announcement-send"
+                    type="button"
+                >
+                    Send Announcement
+                </button>
+
             </div>
+
         </div>
 
     </div>
+
 </div>
 
 <script src="app.js"></script>

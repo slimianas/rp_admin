@@ -870,3 +870,46 @@ RegisterNetEvent('rp_admin:setWeather', function(weather)
     )
 
 end)
+
+RegisterNetEvent('rp_admin:setServerTime', function(hour, minute)
+
+    local source = source
+
+    if not isAdmin(source) then
+        return
+    end
+
+    hour = tonumber(hour)
+    minute = tonumber(minute)
+
+    if not hour or not minute then
+        return
+    end
+
+    hour = math.floor(hour)
+    minute = math.floor(minute)
+
+    if hour < 0 or hour > 23 then
+        return
+    end
+
+    if minute < 0 or minute > 59 then
+        return
+    end
+
+    print(
+        string.format(
+            '^2[RP_ADMIN] Server time set to %02d:%02d^7',
+            hour,
+            minute
+        )
+    )
+
+    TriggerClientEvent(
+        'rp_admin:applyServerTime',
+        -1,
+        hour,
+        minute
+    )
+
+end)

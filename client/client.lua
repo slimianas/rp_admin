@@ -657,3 +657,92 @@ RegisterNetEvent('rp_admin:applyWeather', function(weather)
     )
 
 end)
+
+RegisterNUICallback('setServerTime', function(data, cb)
+
+    local hour = tonumber(data.hour)
+    local minute = tonumber(data.minute)
+
+    if not hour or not minute then
+        cb('ok')
+        return
+    end
+
+    hour = math.floor(hour)
+    minute = math.floor(minute)
+
+    if hour < 0 or hour > 23 then
+        cb('ok')
+        return
+    end
+
+    if minute < 0 or minute > 59 then
+        cb('ok')
+        return
+    end
+
+    TriggerServerEvent(
+        'rp_admin:setServerTime',
+        hour,
+        minute
+    )
+
+    cb('ok')
+
+end)
+
+
+local serverTimeOverride = false
+local serverTimeHour = 12
+local serverTimeMinute = 0
+
+RegisterNetEvent('rp_admin:applyServerTime', function(hour, minute)
+
+    hour = tonumber(hour) or 12
+    minute = tonumber(minute) or 0
+
+    serverTimeHour = hour
+    serverTimeMinute = minute
+    serverTimeOverride = true
+
+    NetworkOverrideClockTime(
+        serverTimeHour,
+        serverTimeMinute,
+        0
+    )
+
+    exports.qbx_core:Notify(
+        string.format(
+            'Server time changed to %02d:%02d.',
+            serverTimeHour,
+            serverTimeMinute
+        ),
+        'success'
+    )
+
+end)
+
+
+CreateThread(function()
+
+    while true do
+
+        if serverTimeOverride then
+
+            NetworkOverrideClockTime(
+                serverTimeHour,
+                serverTimeMinute,
+                0
+            )
+
+            Wait(0)
+
+        else
+
+            Wait(500)
+
+        end
+
+    end
+
+end)

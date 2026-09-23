@@ -2314,3 +2314,99 @@ button {
     color: #ffffff;
     border-color: rgba(255, 255, 255, 0.14);
 }
+
+/* =========================================
+   SERVER TIME
+========================================= */
+
+.time-inputs {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 16px;
+    margin: 20px 0;
+}
+
+.time-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.time-input-group label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #7f8ba3;
+    letter-spacing: 0.08em;
+}
+
+.time-input-group input {
+    width: 110px;
+    height: 55px;
+
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+
+    background: rgba(255,255,255,0.035);
+    color: #ffffff;
+
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+
+    outline: none;
+}
+
+.time-input-group input:focus {
+    border-color: rgba(80,140,255,0.5);
+    background: rgba(80,140,255,0.06);
+}
+
+.time-separator {
+    color: #7f8ba3;
+    font-size: 28px;
+    font-weight: 600;
+    padding-bottom: 10px;
+}
+
+.time-apply-button {
+    width: 100%;
+    height: 46px;
+
+    border-radius: 9px;
+
+    background: rgba(70,130,255,0.15);
+    border: 1px solid rgba(70,130,255,0.3);
+
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.time-apply-button:hover {
+    background: rgba(70,130,255,0.25);
+    border-color: rgba(70,130,255,0.5);
+}
+
+#time-cancel {
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+    color: #aeb8ca;
+
+    padding: 9px 18px;
+    border-radius: 8px;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+#time-cancel:hover {
+    background: rgba(255,255,255,0.08);
+    color: #ffffff;
+}
