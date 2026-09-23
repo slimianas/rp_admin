@@ -2258,3 +2258,59 @@ button {
     }
 
 }
+
+.weather-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.weather-option {
+    min-height: 90px;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.025);
+    color: #fff;
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    font-size: 26px;
+    transition: 0.2s ease;
+}
+
+.weather-option span {
+    font-size: 13px;
+    color: #aeb8ca;
+}
+
+.weather-option:hover {
+    background: rgba(70,130,255,0.12);
+    border-color: rgba(70,130,255,0.4);
+    transform: translateY(-2px);
+}
+
+#weather-cancel {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
+    color: #aeb8ca;
+
+    padding: 9px 18px;
+    border-radius: 8px;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#weather-cancel:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.14);
+}

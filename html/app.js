@@ -68,16 +68,20 @@ window.addEventListener('message', function (event) {
 
 function requestPlayers() {
 
-    fetch(
-        `https://${GetParentResourceName()}/requestPlayers`,
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({})
-        }
-    ).catch(function () {});
+fetch(
+    `https://${GetParentResourceName()}/setWeather`,
+    {
+        method: 'POST',
+
+        headers: {
+            'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify({
+            weather: weather
+        })
+    }
+).catch(function () {});
 }
 
 
@@ -1025,6 +1029,110 @@ function showAnnouncement(message) {
         }, 350);
 
     }, 8000);
+}
+
+/* =========================
+   WEATHER
+   ========================= */
+
+const weatherModal =
+    document.getElementById('weather-modal');
+
+function openWeatherModal() {
+    if (!weatherModal) return;
+
+    weatherModal.classList.add('visible');
+}
+
+function closeWeatherModal() {
+    if (!weatherModal) return;
+
+    weatherModal.classList.remove('visible');
+}
+
+
+/* Weather button */
+
+const weatherButton =
+    document.getElementById('weather-button');
+
+if (weatherButton) {
+
+    weatherButton.addEventListener(
+        'click',
+        function () {
+
+            openWeatherModal();
+
+        }
+    );
+
+}
+
+
+/* Weather options */
+
+document.querySelectorAll(
+    '[data-weather]'
+).forEach(function (button) {
+
+    button.addEventListener(
+        'click',
+        function () {
+
+            const weather =
+                button.dataset.weather;
+
+            fetch(
+                `https://${GetParentResourceName()}/serverAction`,
+                {
+                    method: 'POST',
+
+                    headers: {
+                        'Content-Type':
+                            'application/json'
+                    },
+
+                    body: JSON.stringify({
+                        action: 'weather',
+                        message: weather
+                    })
+                }
+            ).catch(function () {});
+
+            closeWeatherModal();
+
+        }
+    );
+
+});
+
+
+/* Close */
+
+const weatherClose =
+    document.getElementById('weather-close');
+
+if (weatherClose) {
+
+    weatherClose.addEventListener(
+        'click',
+        closeWeatherModal
+    );
+
+}
+
+
+const weatherCancel =
+    document.getElementById('weather-cancel');
+
+if (weatherCancel) {
+
+    weatherCancel.addEventListener(
+        'click',
+        closeWeatherModal
+    );
+
 }
 
 

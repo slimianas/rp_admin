@@ -668,17 +668,126 @@
                     </div>
                 </button>
 
+<!-- ANNOUNCEMENT MODAL -->
+ <!-- WEATHER MODAL -->
 
-                <button class="server-action" data-server-action="weather">
-                    <div class="server-action-icon weather-icon">
-                        ☀
+<div id="weather-modal" class="modal-overlay">
+
+    <div class="announcement-modal">
+
+        <div class="modal-header">
+
+            <div class="modal-player">
+
+                <div class="modal-avatar">
+                    ☀
+                </div>
+
+                <div>
+                    <div class="modal-title">
+                        Weather Control
                     </div>
 
-                    <div>
-                        <strong>Weather</strong>
-                        <span>Change the server weather</span>
+                    <div class="modal-subtitle">
+                        Change the server weather
                     </div>
+                </div>
+
+            </div>
+
+            <button
+                class="modal-close"
+                id="weather-close"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="announcement-body">
+
+            <div class="modal-section-title">
+                SELECT WEATHER
+            </div>
+
+            <div class="weather-grid">
+
+                <button class="weather-option" data-weather="CLEAR">
+                    ☀️
+                    <span>Clear</span>
                 </button>
+
+                <button class="weather-option" data-weather="CLOUDS">
+                    ☁️
+                    <span>Clouds</span>
+                </button>
+
+                <button class="weather-option" data-weather="RAIN">
+                    🌧️
+                    <span>Rain</span>
+                </button>
+
+                <button class="weather-option" data-weather="THUNDER">
+                    ⛈️
+                    <span>Thunder</span>
+                </button>
+
+                <button class="weather-option" data-weather="FOGGY">
+                    🌫️
+                    <span>Foggy</span>
+                </button>
+
+                <button class="weather-option" data-weather="OVERCAST">
+                    🌥️
+                    <span>Overcast</span>
+                </button>
+
+                <button class="weather-option" data-weather="SMOG">
+                    🌁
+                    <span>Smog</span>
+                </button>
+
+                <button class="weather-option" data-weather="XMAS">
+                    ❄️
+                    <span>Snow</span>
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+            <span>
+                Server weather
+            </span>
+
+            <button id="weather-cancel">
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div> 
+
+<button
+    class="server-action"
+    id="weather-button"
+    data-server-action="weather"
+>
+    <div class="server-action-icon weather-icon">
+        ☀
+    </div>
+
+    <div>
+        <strong>Weather</strong>
+        <span>Change the server weather</span>
+    </div>
+</button>
 
 
                 <button class="server-action" data-server-action="time">

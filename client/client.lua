@@ -493,6 +493,28 @@ RegisterNUICallback('serverAction', function(data, cb)
     cb('ok')
 end)
 
+RegisterNetEvent('rp_admin:setWeather', function(weather)
+    weather = tostring(weather or '')
+
+    if weather == '' then
+        return
+    end
+
+    SetWeatherTypeOvertimePersist(
+        weather,
+        1.0
+    )
+
+    SetWeatherTypePersist(weather)
+    SetWeatherTypeNowPersist(weather)
+    SetWeatherTypeNow(weather)
+
+    exports.qbx_core:Notify(
+        'Weather changed to ' .. weather .. '.',
+        'success'
+    )
+end)
+
 RegisterNetEvent('rp_admin:receiveAnnouncement', function(message)
 
     message = tostring(message or '')
@@ -582,5 +604,56 @@ RegisterNetEvent('rp_admin:spawnVehicle', function(model)
     end
 
     SetModelAsNoLongerNeeded(hash)
+
+end)
+
+RegisterNUICallback('setWeather', function(data, cb)
+
+    local weather =
+        tostring(data.weather or ''):upper()
+
+    print(
+        '^3[RP_ADMIN] Weather requested: '
+        .. weather
+        .. '^7'
+    )
+
+    if weather == '' then
+        cb('ok')
+        return
+    end
+
+    TriggerServerEvent(
+        'rp_admin:setWeather',
+        weather
+    )
+
+    cb('ok')
+
+end)
+
+
+RegisterNetEvent('rp_admin:applyWeather', function(weather)
+
+    weather =
+        tostring(weather or ''):upper()
+
+    if weather == '' then
+        return
+    end
+
+    SetWeatherTypeOvertimePersist(
+        weather,
+        1.0
+    )
+
+    SetWeatherTypePersist(weather)
+    SetWeatherTypeNowPersist(weather)
+    SetWeatherTypeNow(weather)
+
+    exports.qbx_core:Notify(
+        'Weather changed to ' .. weather .. '.',
+        'success'
+    )
 
 end)

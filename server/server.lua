@@ -642,30 +642,102 @@ RegisterNetEvent('rp_admin:serverAction', function(action, message)
 
     local source = source
 
-    print('^3[RP_ADMIN] serverAction received from ID ' .. tostring(source) .. '^7')
-    print('^3[RP_ADMIN] Action: ' .. tostring(action) .. '^7')
-    print('^3[RP_ADMIN] Message: ' .. tostring(message) .. '^7')
+    print(
+        '^3[RP_ADMIN] serverAction received from ID '
+        .. tostring(source)
+        .. '^7'
+    )
+
+    print(
+        '^3[RP_ADMIN] Action: '
+        .. tostring(action)
+        .. '^7'
+    )
+
+    print(
+        '^3[RP_ADMIN] Message: '
+        .. tostring(message)
+        .. '^7'
+    )
 
     if not isAdmin(source) then
-        print('^1[RP_ADMIN] Permission denied for ID ' .. tostring(source) .. '^7')
+
+        print(
+            '^1[RP_ADMIN] Permission denied for ID '
+            .. tostring(source)
+            .. '^7'
+        )
+
         return
     end
 
+
+    -- ANNOUNCEMENT
+
     if action == 'announcement' then
 
-        message = tostring(message or ''):sub(1, 200)
+        message =
+            tostring(message or ''):sub(1, 200)
 
         if message == '' then
             print('^1[RP_ADMIN] Empty announcement^7')
             return
         end
 
-        print('^2[RP_ADMIN] Broadcasting announcement: ' .. message .. '^7')
+        print(
+            '^2[RP_ADMIN] Broadcasting announcement: '
+            .. message
+            .. '^7'
+        )
 
         TriggerClientEvent(
             'rp_admin:receiveAnnouncement',
             -1,
             message
+        )
+
+
+    -- WEATHER
+
+    elseif action == 'weather' then
+
+        local weather =
+            tostring(message or '')
+                :upper()
+                :sub(1, 20)
+
+        local allowedWeather = {
+            CLEAR = true,
+            CLOUDS = true,
+            RAIN = true,
+            THUNDER = true,
+            FOGGY = true,
+            OVERCAST = true,
+            SMOG = true,
+            XMAS = true
+        }
+
+        if not allowedWeather[weather] then
+
+            print(
+                '^1[RP_ADMIN] Invalid weather: '
+                .. weather
+                .. '^7'
+            )
+
+            return
+        end
+
+        print(
+            '^2[RP_ADMIN] Setting weather to '
+            .. weather
+            .. '^7'
+        )
+
+        TriggerClientEvent(
+            'rp_admin:applyWeather',
+            -1,
+            weather
         )
 
     end
@@ -747,4 +819,54 @@ RegisterNetEvent('rp_admin:testServerEvent', function(message)
     print('^3Player ID: ' .. tostring(src) .. '^7')
     print('^3Message: ' .. tostring(message) .. '^7')
     print('^2========================================^7')
+end)
+
+RegisterNetEvent('rp_admin:setWeather', function(weather)
+
+    local source = source
+
+    if not isAdmin(source) then
+        print(
+            '^1[RP_ADMIN] Weather permission denied for ID '
+            .. tostring(source)
+            .. '^7'
+        )
+        return
+    end
+
+    weather =
+        tostring(weather or ''):upper():sub(1, 20)
+
+    local allowedWeather = {
+        CLEAR = true,
+        CLOUDS = true,
+        RAIN = true,
+        THUNDER = true,
+        FOGGY = true,
+        OVERCAST = true,
+        SMOG = true,
+        XMAS = true
+    }
+
+    if not allowedWeather[weather] then
+        print(
+            '^1[RP_ADMIN] Invalid weather: '
+            .. weather
+            .. '^7'
+        )
+        return
+    end
+
+    print(
+        '^2[RP_ADMIN] Setting weather to '
+        .. weather
+        .. '^7'
+    )
+
+    TriggerClientEvent(
+        'rp_admin:applyWeather',
+        -1,
+        weather
+    )
+
 end)
